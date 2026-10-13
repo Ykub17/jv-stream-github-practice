@@ -10,6 +10,7 @@ import model.Cat;
 import model.Person;
 
 public class StreamPractice {
+
     /**
      * Given list of strings where each element contains 1+ numbers:
      * input = {"5,30,100", "0,22,7", ...}
@@ -43,37 +44,36 @@ public class StreamPractice {
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
+     * for example, `Arrays.asList( new Person("Victor", 16, Sex.MAN),
+     * new Person("Helen", 42, Sex.WOMAN))`,
      * select from the List only men whose age is from `fromAge` to `toAge` inclusively.
-     * <p>
+     *
      * Example: select men who can be recruited to army (from 18 to 27 years old inclusively).
      */
     public List<Person> selectMenByAge(List<Person> peopleList, int fromAge, int toAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.MAN)
+                .filter(p -> Person.Sex.MAN.equals(p.getSex()))
                 .filter(p -> p.getAge() >= fromAge && p.getAge() <= toAge)
                 .collect(Collectors.toList());
     }
 
     /**
      * Given a List of `Person` instances (having `name`, `age` and `sex` fields),
-     * for example, `Arrays.asList( new Person(«Victor», 16, Sex.MAN),
-     * new Person(«Helen», 42, Sex.WOMAN))`,
+     * for example, `Arrays.asList( new Person("Victor", 16, Sex.MAN),
+     * new Person("Helen", 42, Sex.WOMAN))`,
      * select from the List only people whose age is from `fromAge` and to `maleToAge` (for men)
      * or to `femaleToAge` (for women) inclusively.
-     * <p>
+     *
      * Example: select people of working age
      * (from 18 y.o. and to 60 y.o. for men and to 55 y.o. for women inclusively).
      */
     public List<Person> getWorkablePeople(int fromAge, int femaleToAge,
                                           int maleToAge, List<Person> peopleList) {
         return peopleList.stream()
-                .filter(p -> (p.getSex() == Person.Sex.MAN
+                .filter(p -> (Person.Sex.MAN.equals(p.getSex())
                         && p.getAge() >= fromAge && p.getAge() <= maleToAge)
-                        || (p.getSex() == Person.Sex.WOMAN
+                        || (Person.Sex.WOMAN.equals(p.getSex())
                         && p.getAge() >= fromAge && p.getAge() <= femaleToAge))
-
                 .collect(Collectors.toList());
     }
 
@@ -84,7 +84,7 @@ public class StreamPractice {
      */
     public List<String> getCatsNames(List<Person> peopleList, int femaleAge) {
         return peopleList.stream()
-                .filter(p -> p.getSex() == Person.Sex.WOMAN && p.getAge() >= femaleAge)
+                .filter(p -> Person.Sex.WOMAN.equals(p.getSex()) && p.getAge() >= femaleAge)
                 .flatMap(person -> person.getCats().stream())
                 .map(Cat::getName)
                 .collect(Collectors.toList());
